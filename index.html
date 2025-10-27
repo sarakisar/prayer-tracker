@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الصلوات اليومية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .prayer-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .prayer-title {
+            font-size: 18px;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .prayer-title::before {
+            content: "🕌";
+            font-size: 24px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-left: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .radio-option label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+            font-weight: normal;
+        }
+
+        .radio-option input[type="radio"]:checked + label {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 20px;
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .required {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📿 تسجيل الصلوات اليومية</h1>
+            <p>سجلي صلواتك اليومية للمتابعة والتقييم</p>
+        </div>
+
+        <form id="prayerForm">
+            <div class="form-group">
+                <label for="studentName">اسم الطالبة <span class="required">*</span></label>
+                <input type="text" id="studentName" name="studentName" required placeholder="أدخلي اسمك الأول">
+            </div>
+
+            <div class="form-group">
+                <label for="date">التاريخ <span class="required">*</span></label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <div class="prayer-section">
+                <div class="prayer-title">صلاة الفجر</div>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="fajr-yes" name="fajr" value="نعم، على وقتها" required>
+                        <label for="fajr-yes">✅ نعم، صليت على وقتها</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="fajr-qada" name="fajr" value="قضاءً">
+                        <label for="fajr-qada">🕐 صليت ولكن ليس في أول الوقت</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="fajr-no" name="fajr" value="لا">
+                        <label for="fajr-no">❌ لم أصلِ</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prayer-section">
+                <div class="prayer-title">صلاة الظهر</div>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="dhuhr-yes" name="dhuhr" value="نعم، على وقتها" required>
+                        <label for="dhuhr-yes">✅ نعم، صليت على وقتها</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="dhuhr-qada" name="dhuhr" value="قضاءً">
+                        <label for="dhuhr-qada">🕐 صليت ولكن ليس في أول الوقت</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="dhuhr-no" name="dhuhr" value="لا">
+                        <label for="dhuhr-no">❌ لم أصلِ</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prayer-section">
+                <div class="prayer-title">صلاة العصر</div>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="asr-yes" name="asr" value="نعم، على وقتها" required>
+                        <label for="asr-yes">✅ نعم، صليت على وقتها</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="asr-qada" name="asr" value="قضاءً">
+                        <label for="asr-qada">🕐 صليت ولكن ليس في أول الوقت</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="asr-no" name="asr" value="لا">
+                        <label for="asr-no">❌ لم أصلِ</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prayer-section">
+                <div class="prayer-title">صلاة المغرب</div>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="maghrib-yes" name="maghrib" value="نعم، على وقتها" required>
+                        <label for="maghrib-yes">✅ نعم، صليت على وقتها</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="maghrib-qada" name="maghrib" value="قضاءً">
+                        <label for="maghrib-qada">🕐 صليت ولكن ليس في أول الوقت</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="maghrib-no" name="maghrib" value="لا">
+                        <label for="maghrib-no">❌ لم أصلِ</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prayer-section">
+                <div class="prayer-title">صلاة العشاء</div>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="isha-yes" name="isha" value="نعم، على وقتها" required>
+                        <label for="isha-yes">✅ نعم، صليت على وقتها</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="isha-qada" name="isha" value="قضاءً">
+                        <label for="isha-qada">🕐 صليت ولكن ليس في أول الوقت</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="isha-no" name="isha" value="لا">
+                        <label for="isha-no">❌ لم أصلِ</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">✨ إرسال البيانات</button>
+        </form>
+
+        <div class="success-message" id="successMessage">
+            ✅ تم إرسال البيانات بنجاح! بارك الله بك
+        </div>
+    </div>
+
+    <script>
+        // Set today's date as default
+        document.getElementById('date').valueAsDate = new Date();
+
+        document.getElementById('prayerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // جمع البيانات
+            const formData = {
+                studentName: document.getElementById('studentName').value,
+                date: document.getElementById('date').value,
+                fajr: document.querySelector('input[name="fajr"]:checked').value,
+                dhuhr: document.querySelector('input[name="dhuhr"]:checked').value,
+                asr: document.querySelector('input[name="asr"]:checked').value,
+                maghrib: document.querySelector('input[name="maghrib"]:checked').value,
+                isha: document.querySelector('input[name="isha"]:checked').value
+            };
+
+            // هنا يمكنك ربط النموذج مع Google Sheets
+            // راجعي التعليمات أدناه
+            
+            fetch('https://script.google.com/macros/s/AKfycbxLToPYzwlrP13qnRT_lwMwx6GENWwkCQlqycIGR2mYuGAe5YP9yo85x3FTw3R-2WVE/exec', {
+    method: 'POST',
+    body: JSON.stringify(formData)
+});
+            
+            // عرض رسالة النجاح
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // إعادة تعيين النموذج
+            setTimeout(() => {
+                this.reset();
+                document.getElementById('date').valueAsDate = new Date();
+                document.getElementById('successMessage').style.display = 'none';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
